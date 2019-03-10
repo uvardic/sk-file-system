@@ -1,5 +1,12 @@
 package util;
 
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
+import exeptions.FileNotFoundException;
+
+import java.io.File;
+import java.net.URI;
+
 /**
  * Static convenience methods that help a method or constructor check whether it was invoked
  * correctly (that is, whether its <i>preconditions</i> were met).
@@ -50,7 +57,7 @@ public class Preconditions {
      *
      * @exception NullPointerException if {@code reference} is null
      */
-    public static <T> T checkNotNull(final T reference) {
+    public static <T> T checkNotNull(@NotNull final T reference) {
         if (reference == null)
             throw new NullPointerException();
 
@@ -67,7 +74,7 @@ public class Preconditions {
      *
      * @exception NullPointerException if {@code reference} is null
      */
-    public static <T> T checkNotNull(final T reference, final String errorMessage) {
+    public static <T> T checkNotNull(@NotNull final T reference, @Nullable final String errorMessage) {
         if (reference == null)
             throw new NullPointerException(errorMessage);
 
@@ -94,7 +101,7 @@ public class Preconditions {
      *
      * @exception IllegalArgumentException if {@code expression} is false
      */
-    public static void checkArgument(final boolean expression, final String errorMessage) {
+    public static void checkArgument(final boolean expression, @Nullable final String errorMessage) {
         if (!expression)
             throw new IllegalArgumentException(errorMessage);
     }
@@ -119,8 +126,83 @@ public class Preconditions {
      *
      * @exception IllegalStateException if {@code expression} is false
      */
-    public static void checkState(final boolean expression, final String errorMessage) {
+    public static void checkState(final boolean expression, @Nullable final String errorMessage) {
         if (!expression)
             throw new IllegalStateException(errorMessage);
+    }
+
+    /**
+     * Ensures that the given file exists.
+     *
+     * @param reference a file reference
+     *
+     * @exception FileNotFoundException if {@code expression} does not exist
+     */
+    public static void checkFile(@NotNull final File reference) {
+        if (!reference.exists())
+            throw new FileNotFoundException();
+    }
+
+    /**
+     * Ensures that the given file exists.
+     *
+     * @param reference a file reference
+     * @param errorMessage the exception message to use if the check fails
+     *
+     * @exception FileNotFoundException if {@code expression} does not exist
+     */
+    public static void checkFile(@NotNull final File reference, @Nullable final String errorMessage) {
+        if (!reference.exists())
+            throw new FileNotFoundException(errorMessage);
+    }
+
+    /**
+     * Ensures that the file on the given path exists.
+     *
+     * @param filePath a file path
+     *
+     * @exception FileNotFoundException if file on {@code filePath} does not exist
+     */
+    public static void checkFile(@NotNull final String filePath) {
+        if (!new File(filePath).exists())
+            throw new FileNotFoundException();
+    }
+
+    /**
+     * Ensures that the file on the given path exists.
+     *
+     * @param filePath a file path
+     * @param errorMessage the exception message to use if the check fails
+     *
+     * @exception FileNotFoundException if file on {@code filePath} does not exist
+     */
+    public static void checkFile(@NotNull final String filePath, @Nullable String errorMessage) {
+        if (!new File(filePath).exists())
+            throw new FileNotFoundException(errorMessage);
+    }
+
+    /**
+     * Ensures that the file on the given URI exists.
+     *
+     * @param fileURI a file URI
+     *
+     * @exception FileNotFoundException if file on {@code fileURI} does not exist
+     */
+    public static void checkFile(@NotNull final URI fileURI) {
+        if (!new File(fileURI).exists())
+            throw new FileNotFoundException();
+    }
+
+    /**
+     * Ensures that the file on the given URI exists.
+     *
+     * @param fileURI a file URI
+     * @param errorMessage the exception message to use if the check fails
+     *
+     * @exception FileNotFoundException if file on {@code fileURI} does not exist
+     */
+    public static void checkFile(@NotNull final URI fileURI, @Nullable String errorMessage) {
+        if (!new File(fileURI).exists())
+            throw new FileNotFoundException(errorMessage);
     }
 }
