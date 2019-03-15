@@ -1,7 +1,5 @@
 package util;
 
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
 import exeptions.FileNotFoundException;
 
 import java.io.File;
@@ -57,7 +55,7 @@ public class Preconditions {
      *
      * @exception NullPointerException if {@code reference} is null
      */
-    public static <T> T checkNotNull(@NotNull final T reference) {
+    public static <T> T checkNotNull(final T reference) {
         if (reference == null)
             throw new NullPointerException();
 
@@ -74,7 +72,7 @@ public class Preconditions {
      *
      * @exception NullPointerException if {@code reference} is null
      */
-    public static <T> T checkNotNull(@NotNull final T reference, @Nullable final String errorMessage) {
+    public static <T> T checkNotNull(final T reference, final String errorMessage) {
         if (reference == null)
             throw new NullPointerException(errorMessage);
 
@@ -101,7 +99,7 @@ public class Preconditions {
      *
      * @exception IllegalArgumentException if {@code expression} is false
      */
-    public static void checkArgument(final boolean expression, @Nullable final String errorMessage) {
+    public static void checkArgument(final boolean expression, final String errorMessage) {
         if (!expression)
             throw new IllegalArgumentException(errorMessage);
     }
@@ -126,7 +124,7 @@ public class Preconditions {
      *
      * @exception IllegalStateException if {@code expression} is false
      */
-    public static void checkState(final boolean expression, @Nullable final String errorMessage) {
+    public static void checkState(final boolean expression, final String errorMessage) {
         if (!expression)
             throw new IllegalStateException(errorMessage);
     }
@@ -138,7 +136,7 @@ public class Preconditions {
      *
      * @exception FileNotFoundException if {@code expression} does not exist
      */
-    public static void checkFile(@NotNull final File reference) {
+    public static void checkFile(final File reference) {
         if (!reference.exists())
             throw new FileNotFoundException();
     }
@@ -151,7 +149,7 @@ public class Preconditions {
      *
      * @exception FileNotFoundException if {@code expression} does not exist
      */
-    public static void checkFile(@NotNull final File reference, @Nullable final String errorMessage) {
+    public static void checkFile(final File reference, final String errorMessage) {
         if (!reference.exists())
             throw new FileNotFoundException(errorMessage);
     }
@@ -163,7 +161,7 @@ public class Preconditions {
      *
      * @exception FileNotFoundException if file on {@code filePath} does not exist
      */
-    public static void checkFile(@NotNull final String filePath) {
+    public static void checkFile(final String filePath) {
         if (!new File(filePath).exists())
             throw new FileNotFoundException();
     }
@@ -176,7 +174,7 @@ public class Preconditions {
      *
      * @exception FileNotFoundException if file on {@code filePath} does not exist
      */
-    public static void checkFile(@NotNull final String filePath, @Nullable String errorMessage) {
+    public static void checkFile(final String filePath, final String errorMessage) {
         if (!new File(filePath).exists())
             throw new FileNotFoundException(errorMessage);
     }
@@ -188,7 +186,7 @@ public class Preconditions {
      *
      * @exception FileNotFoundException if file on {@code fileURI} does not exist
      */
-    public static void checkFile(@NotNull final URI fileURI) {
+    public static void checkFile(final URI fileURI) {
         if (!new File(fileURI).exists())
             throw new FileNotFoundException();
     }
@@ -201,7 +199,7 @@ public class Preconditions {
      *
      * @exception FileNotFoundException if file on {@code fileURI} does not exist
      */
-    public static void checkFile(@NotNull final URI fileURI, @Nullable String errorMessage) {
+    public static void checkFile(final URI fileURI, final String errorMessage) {
         if (!new File(fileURI).exists())
             throw new FileNotFoundException(errorMessage);
     }

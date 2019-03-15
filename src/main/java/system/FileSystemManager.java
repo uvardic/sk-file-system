@@ -1,8 +1,4 @@
-package manager;
-
-import com.sun.istack.internal.NotNull;
-import specification.FileSystem;
-import sun.reflect.CallerSensitive;
+package system;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,9 +68,7 @@ public class FileSystemManager {
      * @see #registerSystem(FileSystem)
      * @see #getFileSystem(String)
      */
-    @NotNull
-    @CallerSensitive
-    public static FileSystem getFileSystem(@NotNull final Class<? extends FileSystem> caller) {
+    public static FileSystem getFileSystem(final Class<? extends FileSystem> caller) {
         return getFileSystemWorker(checkNotNull(caller).getName());
     }
 
@@ -98,9 +92,7 @@ public class FileSystemManager {
      *
      * @see #registerSystem(FileSystem)
      */
-    @NotNull
-    @CallerSensitive
-    public static FileSystem getFileSystem(@NotNull final String callerClassName) {
+    public static FileSystem getFileSystem(final String callerClassName) {
         return getFileSystemWorker(checkNotNull(callerClassName));
     }
 
@@ -134,7 +126,7 @@ public class FileSystemManager {
      * @exception NullPointerException if the given {@code fileSystem} is null
      * @exception IllegalArgumentException if the given file system is already registered
      */
-    public static void registerSystem(@NotNull final FileSystem fileSystem) {
+    public static void registerSystem(final FileSystem fileSystem) {
         checkNotNull(fileSystem, "Null value can't be registered or unregistered!");
         checkArgument(!registeredSystems.contains(fileSystem), "Specified system is already registered!");
 
@@ -151,7 +143,7 @@ public class FileSystemManager {
      * @exception IllegalArgumentException if the given {@code fileSystem} wasn't found in the list
      * of registered systems
      */
-    public static void unregisterSystem(@NotNull final FileSystem fileSystem) {
+    public static void unregisterSystem(final FileSystem fileSystem) {
         checkNotNull(fileSystem, "Null value can't be registered or unregistered!");
         checkArgument(registeredSystems.contains(fileSystem), "Specified system could't be found!");
 

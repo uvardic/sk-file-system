@@ -1,4 +1,6 @@
-package specification;
+package system;
+
+import meta.FileMetaData;
 
 import java.io.File;
 import java.util.Collection;
