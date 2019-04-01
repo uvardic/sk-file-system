@@ -4,40 +4,35 @@ import meta.FileMetaData;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 public interface FileSystem {
 
     void initialize();
 
-    void save(File file);
+    void terminate();
 
-    void upload(File file, String destinationPath);
+    void upload(final File file, final String path);
 
-    void upload(File file, String destinationPath, FileMetaData fileMetaData);
+    void upload(final File file, final String path, final FileMetaData fileMetaData);
 
-    void uploadCollection(Collection<File> files, String destinationPath);
+    void uploadCollection(final Collection<File> files, final String path);
 
-    void uploadCollection(Map<File, FileMetaData> filesWithMetaData, String destinationPath);
+    void uploadCollection(final Map<File, FileMetaData> files, final String path);
 
-    void uploadCompressed(File file, String destinationPath);
+    void download(final File file);
 
-    void uploadCompressed(File file, String destinationPath, FileMetaData fileMetaData);
+    void downloadCollection(final List<File> files);
 
-    void uploadCompressedCollection(Collection<File> files, String destinationPath);
+    void createDir(final String dirName, final String dirPath);
 
-    void uploadCompressedCollection(Map<File, FileMetaData> filesWithMetaData, String destinationPath);
+    void excludeFileExtension(final String fileExtension);
 
-    void createDirectory(String directoryPath);
+    List<File> findAll();
 
-    void disallowExtension(String extension);
+    List<File> findByName(final String name);
 
-    void allowExtension(String extension);
-
-    Collection<?> getDisallowedExtensions();
-
-    File findByName(String fileName);
-
-    File findByExtension(String fileExtension);
+    List<File> findByExtension(final String extension);
 
 }

@@ -3,7 +3,8 @@ apply plugin: 'idea'
 apply plugin: 'eclipse'
 
 group 'SK1'
-version '1.0-SNAPSHOT'
+
+version = findProperty('sk_file_system_version')
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -14,8 +15,10 @@ repositories {
     mavenCentral()
 }
 
+libsDirName = '../../sk-libs'
+
 jar {
-    baseName = 'file-system-module'
+    baseName = 'file-system'
     version = (findProperty('sk_file_system_lib_version'))
 }
 
