@@ -1,6 +1,6 @@
 package util;
 
-import exeptions.FileNotFoundException;
+import exceptions.FileNotFoundException;
 
 import java.io.File;
 import java.net.URI;

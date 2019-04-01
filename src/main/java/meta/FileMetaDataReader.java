@@ -37,7 +37,7 @@ public class FileMetaDataReader {
         try (final Scanner scanner = new Scanner(file)) {
             return scanner.useDelimiter("\\Z").next();
         } catch (final FileNotFoundException ex) {
-            throw new exeptions.FileNotFoundException();
+            throw new exceptions.FileNotFoundException();
         }
     }
 

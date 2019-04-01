@@ -1,5 +1,7 @@
 package system;
 
+import exceptions.FileSystemNotFoundException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +65,7 @@ public class FileSystemManager {
      * @return file system based on the {@code caller}
      *
      * @exception NullPointerException if the specified {@code caller} is null
-     * @exception IllegalArgumentException if a suitable file system was not found
+     * @exception exceptions.FileSystemNotFoundException if a suitable file system was not found
      *
      * @see #registerSystem(FileSystem)
      * @see #getFileSystem(String)
@@ -87,8 +89,8 @@ public class FileSystemManager {
      * @return file system based on the {@code callerClassName}
      *
      * @exception NullPointerException if the specified {@code callerClassName} is null
-     * @exception IllegalArgumentException if the specified {@code callerClassName} is invalid
-     * and the class could not be found or if a suitable file system was not found
+     * @exception exceptions.FileSystemNotFoundException if the specified {@code callerClassName}
+     * is invalid and the class could not be found or if a suitable file system was not found
      *
      * @see #registerSystem(FileSystem)
      */
@@ -105,14 +107,14 @@ public class FileSystemManager {
         return registeredSystems.stream()
                 .filter(fileSystem -> fileSystem.getClass().equals(callerClass))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Suitable file system wasn't found!"));
+                .orElseThrow(() -> new FileSystemNotFoundException("Suitable file system wasn't found!"));
     }
 
     private static Class<?> initializeCallerClass(final String callerClassName) {
         try {
             return Class.forName(callerClassName);
         } catch (final ClassNotFoundException ex) {
-            throw new IllegalArgumentException("Specified caller class could not be found!");
+            throw new FileSystemNotFoundException("Specified caller class could not be found!");
         }
     }
 
