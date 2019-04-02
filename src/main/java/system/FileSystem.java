@@ -5,7 +5,6 @@ import meta.FileMetaData;
 
 import java.io.File;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -88,12 +87,15 @@ public interface FileSystem {
      * @param file to upload to this file system
      * @param path desired path for specified {@code file}
      *
+     * @exception NullPointerException if one of the specified parameters is null
      * @exception FileSystemClosedException if the file system was closed
      * by calling the {@link #terminate()} method
      * @exception IllegalArgumentException if the specified {@code path} is not
      * a directory
      * @exception exceptions.FileAlreadyExistsException if a file with the same name
      * as the specified file already exists on the specified {@code path}
+     * @exception exceptions.FileNotSupportedException if the specified file extension
+     * was excluded with {@link #excludeFileExtension(String)} method
      */
     void upload(final File file, final String path);
 
@@ -110,12 +112,15 @@ public interface FileSystem {
      * @param path desired path for specified {@code file}
      * @param fileMetaData meta data for the specified {@code file}
      *
+     * @exception NullPointerException if one of the specified parameters is null
      * @exception FileSystemClosedException if the file system was closed
      * by calling the {@link #terminate()} method
      * @exception IllegalArgumentException if the specified {@code path} is not
      * a directory
      * @exception exceptions.FileAlreadyExistsException if a file with the same name
      * as the specified file already exists on the specified {@code path}
+     * @exception exceptions.FileNotSupportedException if the specified file extension
+     * was excluded with {@link #excludeFileExtension(String)} method
      */
     void upload(final File file, final String path, final FileMetaData fileMetaData);
 
@@ -130,12 +135,15 @@ public interface FileSystem {
      * @param files collection of files
      * @param path desired path for specified {@code files}
      *
+     * @exception NullPointerException if one of the specified parameters is null
      * @exception FileSystemClosedException if the file system was closed
      * by calling the {@link #terminate()} method
      * @exception IllegalArgumentException if the specified {@code path} is not
      * a directory
      * @exception exceptions.FileAlreadyExistsException if a file with the same name
      * as the specified file already exists on the specified {@code path}
+     * @exception exceptions.FileNotSupportedException if one of the specified file
+     * extensions were excluded with {@link #excludeFileExtension(String)} method
      */
     void uploadCollection(final Collection<File> files, final String path);
 
@@ -151,27 +159,110 @@ public interface FileSystem {
      * @param files collection of files and their meta data
      * @param path desired path for specified {@code files}
      *
+     * @exception NullPointerException if one of the specified parameters is null
      * @exception FileSystemClosedException if the file system was closed
      * by calling the {@link #terminate()} method
      * @exception IllegalArgumentException if the specified {@code path} is not
      * a directory
      * @exception exceptions.FileAlreadyExistsException if one of the specified files
      * already exists on the specified {@code path}
+     * @exception exceptions.FileNotSupportedException if one of the specified file
+     * extensions were excluded with {@link #excludeFileExtension(String)} method
      */
     void uploadCollection(final Map<File, FileMetaData> files, final String path);
 
+    /**
+     * Copies {@code file} data from the file system to the local machine.
+     *
+     * @param file to be downloaded
+     *
+     * @exception NullPointerException if the specified {@code file} is null
+     * @exception FileSystemClosedException if the file system was closed
+     * by calling the {@link #terminate()} method
+     * @exception exceptions.FileNotFoundException if the specified
+     * {@code file} was not found
+     */
     void download(final File file);
 
-    void downloadCollection(final List<File> files);
+    /**
+     * Copies a collection of file data from the file system to the
+     * local machine.
+     *
+     * @param files collection of files to be downloaded
+     *
+     * @exception FileSystemClosedException if the file system was closed
+     * by calling the {@link #terminate()} method
+     * @exception exceptions.FileNotFoundException if one of the specified
+     * {@code files} was not found
+     */
+    void downloadCollection(final Collection<File> files);
 
-    void createDir(final String dirName, final String dirPath);
+    /**
+     * Creates a directory on the specified {@code dirPath}.
+     *
+     * @param dirPath desired path of the new directory
+     *
+     * @exception NullPointerException if the specified {@code dirPath} is null
+     * @exception IllegalArgumentException if the specified {@code dirPath} is
+     * an invalid file path
+     * @exception FileSystemClosedException if the file system was closed
+     * by calling the {@link #terminate()} method
+     */
+    void createDir(final String dirPath);
 
+    /**
+     * Excludes all files with the specified {@code fileExtension} from
+     * the file system.
+     *
+     * <p>
+     * Excluded files can't be uploaded to the file system. An attempt to upload
+     * an excluded file will throw an {@link exceptions.FileNotSupportedException}.
+     * </p>
+     *
+     * @param fileExtension extension to be excluded from the file system
+     */
     void excludeFileExtension(final String fileExtension);
 
-    List<File> findAll();
+    /**
+     * Finds all files on the file system and returns them as a collection.
+     * If there are no files on the file system an empty collection
+     * will be returned.
+     *
+     * @return a collection of all found files found on the file system
+     *
+     * @exception FileSystemClosedException if the file system was closed
+     * by calling the {@link #terminate()} method
+     */
+    Collection<File> findAll();
 
-    List<File> findByName(final String name);
+    /**
+     * Attempts to find all files with the specified {@code name}.
+     * If there are no files on the file system with the specified
+     * {@code name} an empty collection will be returned.
+     *
+     * @param name of the desired file
+     *
+     * @return a collection of all found files on the file system
+     *
+     * @exception NullPointerException if the specified {@code name} is null
+     * @exception FileSystemClosedException if the file system was closed
+     * by calling the {@link #terminate()} method
+     */
+    Collection<File> findByName(final String name);
 
-    List<File> findByExtension(final String extension);
+    /**
+     * Attempts to find all file with the specified {@code extension}.
+     * if there are no files on the file system with the specified
+     * {@code extension} an empty collection will be returned.
+     *
+     * @param extension of the desired file
+     *
+     * @return a collection of all found files on the file system
+     *
+     * @exception NullPointerException if the specifed {@code name} is null
+     * @exception FileSystemClosedException if the file system was closed
+     * by calling the {@link #terminate()} method
+     */
+    Collection<File> findByExtension(final String extension);
 
 }

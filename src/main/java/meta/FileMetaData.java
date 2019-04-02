@@ -61,6 +61,22 @@ public class FileMetaData {
     }
 
     @Override
+    public String toString() {
+        return "FileMetaData:[" +
+                formatVariable("file", file) +
+                formatVariable("fileName", fileName) +
+                formatVariable("authorName", authorName) +
+                formatVariable("programName", programName) +
+                formatVariable("category", category) +
+                formatVariable("description", description) +
+                formatVariable("saveData", saveDate) + "]";
+    }
+
+    private String formatVariable(final String variableName, final Object variable) {
+        return variable == null ? "" : String.format("%s=%s", variableName, variable);
+    }
+
+    @Override
     public boolean equals(final Object reference) {
         if (reference instanceof FileMetaData) {
             final FileMetaData other = (FileMetaData) reference;
