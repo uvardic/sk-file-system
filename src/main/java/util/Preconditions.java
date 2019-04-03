@@ -4,6 +4,7 @@ import exceptions.FileNotFoundException;
 
 import java.io.File;
 import java.net.URI;
+import java.util.Arrays;
 
 /**
  * Static convenience methods that help a method or constructor check whether it was invoked
@@ -77,6 +78,19 @@ public class Preconditions {
             throw new NullPointerException(errorMessage);
 
         return reference;
+    }
+
+    /**
+     * Ensures that object references passed as parameters to the calling method
+     * are not null.
+     *
+     * @param references object references
+     *
+     * @exception NullPointerException if one of {@code references} is null
+     */
+    @SafeVarargs
+    public static <T> void checkNotNull(final T... references) {
+        Arrays.stream(references).forEach(Preconditions::checkNotNull);
     }
 
     /**

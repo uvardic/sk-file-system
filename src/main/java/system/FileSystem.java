@@ -77,6 +77,25 @@ public interface FileSystem {
     void terminate();
 
     /**
+     * Excludes all files with the specified {@code fileExtension} from
+     * the file system.
+     *
+     * <p>
+     * Excluded files can't be uploaded to the file system. An attempt to upload
+     * an excluded file will throw an {@link exceptions.FileNotSupportedException}.
+     * </p>
+     *
+     * @param fileExtension extension to be excluded from the file system
+     *
+     * @exception NullPointerException if the specified {@code fileExtension} is null
+     * @exception FileSystemClosedException if the file system was closed
+     * by calling the {@link #terminate()} method
+     * @exception IllegalArgumentException if the specified {@code fileExtension} is
+     * already excluded
+     */
+    void excludeFileExtension(final String fileExtension);
+
+    /**
      * Uploads a single file to the specified {@code path} in this file system.
      *
      * <p>
@@ -92,10 +111,10 @@ public interface FileSystem {
      * by calling the {@link #terminate()} method
      * @exception IllegalArgumentException if the specified {@code path} is not
      * a directory
-     * @exception exceptions.FileAlreadyExistsException if a file with the same name
-     * as the specified file already exists on the specified {@code path}
      * @exception exceptions.FileNotSupportedException if the specified file extension
      * was excluded with {@link #excludeFileExtension(String)} method
+     * @exception exceptions.FileNotFoundException if the specified {@code file}
+     * wasn't found
      */
     void upload(final File file, final String path);
 
@@ -117,10 +136,10 @@ public interface FileSystem {
      * by calling the {@link #terminate()} method
      * @exception IllegalArgumentException if the specified {@code path} is not
      * a directory
-     * @exception exceptions.FileAlreadyExistsException if a file with the same name
-     * as the specified file already exists on the specified {@code path}
      * @exception exceptions.FileNotSupportedException if the specified file extension
      * was excluded with {@link #excludeFileExtension(String)} method
+     * @exception exceptions.FileNotFoundException if the specified {@code file}
+     * wasn't found
      */
     void upload(final File file, final String path, final FileMetaData fileMetaData);
 
@@ -140,10 +159,10 @@ public interface FileSystem {
      * by calling the {@link #terminate()} method
      * @exception IllegalArgumentException if the specified {@code path} is not
      * a directory
-     * @exception exceptions.FileAlreadyExistsException if a file with the same name
-     * as the specified file already exists on the specified {@code path}
      * @exception exceptions.FileNotSupportedException if one of the specified file
      * extensions were excluded with {@link #excludeFileExtension(String)} method
+     * @exception exceptions.FileNotFoundException if one of the specified
+     * {@code files} wasn't found
      */
     void uploadCollection(final Collection<File> files, final String path);
 
@@ -164,10 +183,10 @@ public interface FileSystem {
      * by calling the {@link #terminate()} method
      * @exception IllegalArgumentException if the specified {@code path} is not
      * a directory
-     * @exception exceptions.FileAlreadyExistsException if one of the specified files
-     * already exists on the specified {@code path}
      * @exception exceptions.FileNotSupportedException if one of the specified file
      * extensions were excluded with {@link #excludeFileExtension(String)} method
+     * @exception exceptions.FileNotFoundException if one of the specified
+     * {@code files} wasn't found
      */
     void uploadCollection(final Map<File, FileMetaData> files, final String path);
 
@@ -209,19 +228,6 @@ public interface FileSystem {
      * by calling the {@link #terminate()} method
      */
     void createDir(final String dirPath);
-
-    /**
-     * Excludes all files with the specified {@code fileExtension} from
-     * the file system.
-     *
-     * <p>
-     * Excluded files can't be uploaded to the file system. An attempt to upload
-     * an excluded file will throw an {@link exceptions.FileNotSupportedException}.
-     * </p>
-     *
-     * @param fileExtension extension to be excluded from the file system
-     */
-    void excludeFileExtension(final String fileExtension);
 
     /**
      * Finds all files on the file system and returns them as a collection.

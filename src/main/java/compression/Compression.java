@@ -1,5 +1,7 @@
 package compression;
 
+import exceptions.FileNotSupportedException;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,6 +12,20 @@ import java.util.zip.ZipOutputStream;
 
 import static util.Preconditions.*;
 
+/**
+ * Static convenience methods for compressing files.
+ *
+ * <p>
+ * This class only supports compression formats that are specified
+ * in the {@link SupportedExtensions} class. If an unsupported compression
+ * is attempted {@link exceptions.FileNotSupportedException} will be thrown.
+ * </p>
+ *
+ * @see SupportedExtensions
+ * @see exceptions.FileNotSupportedException
+ *
+ * @author Uros Vardic
+ */
 public class Compression {
 
     private Compression() {}
@@ -38,7 +54,8 @@ public class Compression {
         final boolean isSupported = Arrays.stream(SupportedExtensions.values())
                 .anyMatch(supportedExtension -> supportedExtension.getExtension().equals(extension));
 
-        checkArgument(isSupported, "Destination file is not supported!");
+        if (!isSupported)
+            throw new FileNotSupportedException(String.format("File extension: %s is not supported", extension));
     }
 
     private static void compressWorker(final File input, final File destination) throws IOException {
