@@ -222,24 +222,10 @@ public interface FileSystem {
      * @param dirPath desired path of the new directory
      *
      * @exception NullPointerException if the specified {@code dirPath} is null
-     * @exception IllegalArgumentException if the specified {@code dirPath} is
-     * an invalid file path
      * @exception FileSystemClosedException if the file system was closed
      * by calling the {@link #terminate()} method
      */
     void createDir(final String dirPath);
-
-    /**
-     * Finds all files on the file system and returns them as a collection.
-     * If there are no files on the file system an empty collection
-     * will be returned.
-     *
-     * @return a collection of all found files found on the file system
-     *
-     * @exception FileSystemClosedException if the file system was closed
-     * by calling the {@link #terminate()} method
-     */
-    Collection<File> findAll();
 
     /**
      * Attempts to find all files with the specified {@code name}.
@@ -254,21 +240,35 @@ public interface FileSystem {
      * @exception FileSystemClosedException if the file system was closed
      * by calling the {@link #terminate()} method
      */
-    Collection<File> findByName(final String name);
+    Collection<?> findFileByName(final String name);
 
     /**
      * Attempts to find all file with the specified {@code extension}.
-     * if there are no files on the file system with the specified
+     * If there are no files on the file system with the specified
      * {@code extension} an empty collection will be returned.
      *
      * @param extension of the desired file
      *
      * @return a collection of all found files on the file system
      *
-     * @exception NullPointerException if the specifed {@code name} is null
+     * @exception NullPointerException if the specified {@code extension} is null
      * @exception FileSystemClosedException if the file system was closed
      * by calling the {@link #terminate()} method
      */
-    Collection<File> findByExtension(final String extension);
+    Collection<?> findFileByExtension(final String extension);
 
+    /**
+     * Attempts to find all directories with the specified {@code name}.
+     * If there are no directories on the file system with the specified
+     * {@code name} an empty collection will be returned.
+     *
+     * @param name of the desired directory
+     *
+     * @return a collection of all found directories on the file system
+     *
+     * @exception NullPointerException if the specified {@code name} is null
+     * @exception FileSystemClosedException if the file system was closed
+     * by calling the {@link #terminate()} method
+     */
+    Collection<?> findDirectory(final String name);
 }
