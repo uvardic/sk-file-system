@@ -5,7 +5,6 @@ import meta.FileMetaData;
 
 import java.io.File;
 import java.util.Collection;
-import java.util.Map;
 
 /**
  * Contains methods that define a file system.
@@ -99,8 +98,9 @@ public interface FileSystem {
      * Uploads a single file to the specified {@code path} in this file system.
      *
      * <p>
-     * Specified {@code path} must be a path to a directory where the file
-     * will be uploaded.
+     * If the {@code path} wasn't found on the file system or it does not point
+     * to a directory, the specified {@code file} will be uploaded to the root
+     * directory of the file system.
      * </p>
      *
      * @param file to upload to this file system
@@ -109,8 +109,6 @@ public interface FileSystem {
      * @exception NullPointerException if one of the specified parameters is null
      * @exception FileSystemClosedException if the file system was closed
      * by calling the {@link #terminate()} method
-     * @exception IllegalArgumentException if the specified {@code path} is not
-     * a directory
      * @exception exceptions.FileNotSupportedException if the specified file extension
      * was excluded with {@link #excludeFileExtension(String)} method
      * @exception exceptions.FileNotFoundException if the specified {@code file}
@@ -119,36 +117,37 @@ public interface FileSystem {
     void upload(final File file, final String path);
 
     /**
-     * Uploads a single file, with its meta data, to the specified
-     * {@code path} in this file system.
+     * Uploads a single file with its meta data to the specified {@code path}
+     * in this file system.
      *
      * <p>
-     * Specified {@code path} must be a path to a directory where the file
-     * will be uploaded.
+     * If the {@code path} wasn't found on the file system or it does not point
+     * to a directory, the specified {@code file} will be uploaded to the root
+     * directory of the file system.
      * </p>
      *
-     * @param file to upload to this file system
+     * @param fileMetaData file meta data
      * @param path desired path for specified {@code file}
-     * @param fileMetaData meta data for the specified {@code file}
      *
      * @exception NullPointerException if one of the specified parameters is null
      * @exception FileSystemClosedException if the file system was closed
      * by calling the {@link #terminate()} method
-     * @exception IllegalArgumentException if the specified {@code path} is not
-     * a directory
      * @exception exceptions.FileNotSupportedException if the specified file extension
      * was excluded with {@link #excludeFileExtension(String)} method
      * @exception exceptions.FileNotFoundException if the specified {@code file}
      * wasn't found
+     *
+     * @see FileMetaData
      */
-    void upload(final File file, final String path, final FileMetaData fileMetaData);
+    void upload(final FileMetaData fileMetaData, final String path);
 
     /**
      * Uploads a collection of files to the specified {@code path} in this file system.
      *
      * <p>
-     * Specified {@code path} must be a path to a directory where the files
-     * will be uploaded.
+     * If the {@code path} wasn't found on the file system or it does not point
+     * to a directory, the specified {@code files} will be uploaded to the root
+     * directory of the file system.
      * </p>
      *
      * @param files collection of files
@@ -157,8 +156,6 @@ public interface FileSystem {
      * @exception NullPointerException if one of the specified parameters is null
      * @exception FileSystemClosedException if the file system was closed
      * by calling the {@link #terminate()} method
-     * @exception IllegalArgumentException if the specified {@code path} is not
-     * a directory
      * @exception exceptions.FileNotSupportedException if one of the specified file
      * extensions were excluded with {@link #excludeFileExtension(String)} method
      * @exception exceptions.FileNotFoundException if one of the specified
@@ -167,31 +164,8 @@ public interface FileSystem {
     void uploadCollection(final Collection<File> files, final String path);
 
     /**
-     * Uploads a collection of files, with their meta data, to the specified
-     * {@code path} in this file system.
-     *
-     * <p>
-     * Specified {@code path} must be a path to a directory where the files
-     * will be uploaded.
-     * </p>
-     *
-     * @param files collection of files and their meta data
-     * @param path desired path for specified {@code files}
-     *
-     * @exception NullPointerException if one of the specified parameters is null
-     * @exception FileSystemClosedException if the file system was closed
-     * by calling the {@link #terminate()} method
-     * @exception IllegalArgumentException if the specified {@code path} is not
-     * a directory
-     * @exception exceptions.FileNotSupportedException if one of the specified file
-     * extensions were excluded with {@link #excludeFileExtension(String)} method
-     * @exception exceptions.FileNotFoundException if one of the specified
-     * {@code files} wasn't found
-     */
-    void uploadCollection(final Map<File, FileMetaData> files, final String path);
-
-    /**
      * Copies {@code file} data from the file system to the local machine.
+     * Specified {@code file} can also be a directory.
      *
      * @param file to be downloaded
      *
@@ -205,7 +179,7 @@ public interface FileSystem {
 
     /**
      * Copies a collection of file data from the file system to the
-     * local machine.
+     * local machine. Specified {@code files} can also contain directories.
      *
      * @param files collection of files to be downloaded
      *
@@ -217,7 +191,14 @@ public interface FileSystem {
     void downloadCollection(final Collection<File> files);
 
     /**
-     * Creates a directory on the specified {@code dirPath}.
+     * Creates a directory with the specified {@code dirPath}. Directory name
+     * is represented by the last component of the specified {@code dirPath}.
+     *
+     * <p>
+     * If the specified {@code dirPath} is invalid a new directory a new
+     * directory will be created in the root of the file system. Name of
+     * that new directory will be the last component of the {@code dirPath}.
+     * </p>
      *
      * @param dirPath desired path of the new directory
      *

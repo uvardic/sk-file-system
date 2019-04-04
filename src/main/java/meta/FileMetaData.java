@@ -12,22 +12,22 @@ public class FileMetaData {
 
     private final String fileName;
 
-    private final String authorName;
-
-    private final String programName;
-
-    private final String category;
-
     private final String description;
+
+    private final String mimeType;
+
+    private final String extension;
+
+    private final Long version;
 
     private final Date saveDate;
 
     private FileMetaData(final FileMetaDataBuilder builder) {
         this.file        = builder.file;
         this.fileName    = builder.fileName;
-        this.authorName  = builder.authorName;
-        this.programName = builder.programName;
-        this.category    = builder.category;
+        this.mimeType    = builder.mimeType;
+        this.extension   = builder.extension;
+        this.version     = builder.version;
         this.description = builder.description;
         this.saveDate    = builder.saveDate;
     }
@@ -40,20 +40,20 @@ public class FileMetaData {
         return fileName;
     }
 
-    public String getAuthorName() {
-        return authorName;
-    }
-
-    public String getProgramName() {
-        return programName;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
     public String getDescription() {
         return description;
+    }
+
+    public String getMimeType() {
+        return mimeType;
+    }
+
+    public String getExtension() {
+        return extension;
+    }
+
+    public Long getVersion() {
+        return version;
     }
 
     public Date getSaveDate() {
@@ -65,9 +65,9 @@ public class FileMetaData {
         return "FileMetaData:[" +
                 formatVariable("file", file) +
                 formatVariable("fileName", fileName) +
-                formatVariable("authorName", authorName) +
-                formatVariable("programName", programName) +
-                formatVariable("category", category) +
+                formatVariable("mimeType", mimeType) +
+                formatVariable("extension", extension) +
+                formatVariable("version", version) +
                 formatVariable("description", description) +
                 formatVariable("saveData", saveDate) + "]";
     }
@@ -98,13 +98,13 @@ public class FileMetaData {
 
         private String fileName;
 
-        private String authorName;
-
-        private String programName;
-
-        private String category;
-
         private String description;
+
+        private String mimeType;
+
+        private String extension;
+
+        private Long version;
 
         private Date saveDate;
 
@@ -118,20 +118,20 @@ public class FileMetaData {
             return this;
         }
 
-        public FileMetaDataBuilder authorName(final String authorName) {
-            this.authorName = checkNotNull(authorName);
+        public FileMetaDataBuilder mimeType(final String mimeType) {
+            this.mimeType = checkNotNull(mimeType);
 
             return this;
         }
 
-        public FileMetaDataBuilder programName(final String programName) {
-            this.programName = checkNotNull(programName);
+        public FileMetaDataBuilder extension(final String extension) {
+            this.extension = checkNotNull(extension);
 
             return this;
         }
 
-        public FileMetaDataBuilder category(final String category) {
-            this.category = category;
+        public FileMetaDataBuilder version(final Long version) {
+            this.version = checkNotNull(version);
 
             return this;
         }
