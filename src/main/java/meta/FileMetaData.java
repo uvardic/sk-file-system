@@ -1,12 +1,13 @@
 package meta;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
 import static util.Preconditions.checkNotNull;
 
-public class FileMetaData {
+public class FileMetaData implements Serializable {
 
     private final File file;
 

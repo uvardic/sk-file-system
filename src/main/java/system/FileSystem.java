@@ -3,8 +3,7 @@ package system;
 import exceptions.FileSystemClosedException;
 import meta.FileMetaData;
 
-import java.io.File;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Contains methods that define a file system.
@@ -28,7 +27,7 @@ import java.util.Collection;
  * class. For example
  *
  * <pre>{@code
- * public class FileSystemImplementation implements FileSystem {
+ * public class FileSystemImplementation implements FileSystem<java.io.File> {
  *
  *     static {
  *         FileSystemManager.registerFileSystem(new FileSystemImplementation());
@@ -51,7 +50,7 @@ import java.util.Collection;
  *
  * @author Uros Vardic
  */
-public interface FileSystem {
+public interface FileSystem<T> {
 
     /**
      * Sets up all necessary parameters needed for the file system
@@ -95,7 +94,8 @@ public interface FileSystem {
     void excludeFileExtension(final String fileExtension);
 
     /**
-     * Uploads a single file to the specified {@code path} in this file system.
+     * Uploads a single file, on the given {@code filePath}, to the specified
+     * {@code destinationPath} on this file system.
      *
      * <p>
      * If the {@code path} wasn't found on the file system or it does not point
@@ -103,8 +103,8 @@ public interface FileSystem {
      * directory of the file system.
      * </p>
      *
-     * @param file to upload to this file system
-     * @param path desired path for specified {@code file}
+     * @param filePath to upload to this file system
+     * @param destinationPath desired path for specified {@code file}
      *
      * @exception NullPointerException if one of the specified parameters is null
      * @exception FileSystemClosedException if the file system was closed
@@ -114,7 +114,7 @@ public interface FileSystem {
      * @exception exceptions.FileNotFoundException if the specified {@code file}
      * wasn't found
      */
-    void upload(final File file, final String path);
+    void upload(final String filePath, final String destinationPath);
 
     /**
      * Uploads a single file with its meta data to the specified {@code path}
@@ -142,7 +142,8 @@ public interface FileSystem {
     void upload(final FileMetaData fileMetaData, final String path);
 
     /**
-     * Uploads a collection of files to the specified {@code path} in this file system.
+     * Uploads a collection of files, on the given {@code filePaths} to the
+     * specified {@code destinationPath} on this file system.
      *
      * <p>
      * If the {@code path} wasn't found on the file system or it does not point
@@ -150,8 +151,8 @@ public interface FileSystem {
      * directory of the file system.
      * </p>
      *
-     * @param files collection of files
-     * @param path desired path for specified {@code files}
+     * @param filePaths collection of file paths
+     * @param destinationPath desired path for specified {@code files}
      *
      * @exception NullPointerException if one of the specified parameters is null
      * @exception FileSystemClosedException if the file system was closed
@@ -161,13 +162,13 @@ public interface FileSystem {
      * @exception exceptions.FileNotFoundException if one of the specified
      * {@code files} wasn't found
      */
-    void uploadCollection(final Collection<File> files, final String path);
+    void uploadCollection(final List<String> filePaths, final String destinationPath);
 
     /**
-     * Copies {@code file} data from the file system to the local machine.
+     * Copies file data from the {@code path} on the file system to the local machine.
      * Specified {@code file} can also be a directory.
      *
-     * @param file to be downloaded
+     * @param path of the file to be downloaded
      *
      * @exception NullPointerException if the specified {@code file} is null
      * @exception FileSystemClosedException if the file system was closed
@@ -175,20 +176,20 @@ public interface FileSystem {
      * @exception exceptions.FileNotFoundException if the specified
      * {@code file} was not found
      */
-    void download(final File file);
+    void download(final String path);
 
     /**
-     * Copies a collection of file data from the file system to the
-     * local machine. Specified {@code files} can also contain directories.
+     * Copies a collection of file data on the specified {@code paths}
+     * from the file system to the local machine.
      *
-     * @param files collection of files to be downloaded
+     * @param paths collection of file paths to be downloaded
      *
      * @exception FileSystemClosedException if the file system was closed
      * by calling the {@link #terminate()} method
      * @exception exceptions.FileNotFoundException if one of the specified
      * {@code files} was not found
      */
-    void downloadCollection(final Collection<File> files);
+    void downloadMultiple(final List<String> paths);
 
     /**
      * Creates a directory with the specified {@code dirPath}. Directory name
@@ -221,7 +222,7 @@ public interface FileSystem {
      * @exception FileSystemClosedException if the file system was closed
      * by calling the {@link #terminate()} method
      */
-    Collection<?> findFileByName(final String name);
+    List<T> findFileByName(final String name);
 
     /**
      * Attempts to find all file with the specified {@code extension}.
@@ -236,7 +237,7 @@ public interface FileSystem {
      * @exception FileSystemClosedException if the file system was closed
      * by calling the {@link #terminate()} method
      */
-    Collection<?> findFileByExtension(final String extension);
+    List<T> findFileByExtension(final String extension);
 
     /**
      * Attempts to find all directories with the specified {@code name}.
@@ -251,5 +252,5 @@ public interface FileSystem {
      * @exception FileSystemClosedException if the file system was closed
      * by calling the {@link #terminate()} method
      */
-    Collection<?> findDirectory(final String name);
+    List<T> findDirectory(final String name);
 }
