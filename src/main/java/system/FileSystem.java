@@ -103,7 +103,7 @@ public interface FileSystem<T> {
      * directory of the file system.
      * </p>
      *
-     * @param filePath to upload to this file system
+     * @param filePath path of the file to be uploaded
      * @param destinationPath desired path for specified {@code file}
      *
      * @exception NullPointerException if one of the specified parameters is null
@@ -126,8 +126,9 @@ public interface FileSystem<T> {
      * directory of the file system.
      * </p>
      *
+     * @param filePath path of the file to be uploaded
      * @param fileMetaData file meta data
-     * @param path desired path for specified {@code file}
+     * @param destinationPath desired path for specified {@code file}
      *
      * @exception NullPointerException if one of the specified parameters is null
      * @exception FileSystemClosedException if the file system was closed
@@ -139,7 +140,7 @@ public interface FileSystem<T> {
      *
      * @see FileMetaData
      */
-    void upload(final FileMetaData fileMetaData, final String path);
+    void upload(final String filePath, final FileMetaData fileMetaData, final String destinationPath);
 
     /**
      * Uploads a collection of files, on the given {@code filePaths} to the

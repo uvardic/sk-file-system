@@ -1,15 +1,11 @@
 package meta;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Objects;
 
 import static util.Preconditions.checkNotNull;
 
 public class FileMetaData implements Serializable {
-
-    private final File file;
 
     private final String fileName;
 
@@ -24,17 +20,12 @@ public class FileMetaData implements Serializable {
     private final Date saveDate;
 
     private FileMetaData(final FileMetaDataBuilder builder) {
-        this.file        = builder.file;
         this.fileName    = builder.fileName;
         this.mimeType    = builder.mimeType;
         this.extension   = builder.extension;
         this.version     = builder.version;
         this.description = builder.description;
         this.saveDate    = builder.saveDate;
-    }
-
-    public File getFile() {
-        return file;
     }
 
     public String getFileName() {
@@ -64,7 +55,6 @@ public class FileMetaData implements Serializable {
     @Override
     public String toString() {
         return "FileMetaData:[" +
-                formatVariable("file", file) +
                 formatVariable("fileName", fileName) +
                 formatVariable("mimeType", mimeType) +
                 formatVariable("extension", extension) +
@@ -77,25 +67,7 @@ public class FileMetaData implements Serializable {
         return variable == null ? "" : String.format("%s=%s", variableName, variable);
     }
 
-    @Override
-    public boolean equals(final Object reference) {
-        if (reference instanceof FileMetaData) {
-            final FileMetaData other = (FileMetaData) reference;
-
-            return Objects.equals(this.file, other.file);
-        }
-
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(file);
-    }
-
     public static class FileMetaDataBuilder {
-
-        private final File file;
 
         private String fileName;
 
@@ -109,9 +81,7 @@ public class FileMetaData implements Serializable {
 
         private Date saveDate;
 
-        public FileMetaDataBuilder(final File file) {
-            this.file = checkNotNull(file);
-        }
+        public FileMetaDataBuilder() {}
 
         public FileMetaDataBuilder fileName(final String fileName) {
             this.fileName = checkNotNull(fileName);
