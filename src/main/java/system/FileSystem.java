@@ -210,6 +210,17 @@ public interface FileSystem<T> {
     void createDir(final String dirPath);
 
     /**
+     * Attempts to find all files on this file system. If no files
+     * were found an empty collection will be returned.
+     *
+     * @return a collection of all file on the file system
+     *
+     * @exception FileSystemClosedException if the file system was closed
+     * by calling the {@link #terminate()} method
+     */
+    List<T> findAll();
+
+    /**
      * Attempts to find all files with the specified {@code name}.
      * If there are no files on the file system with the specified
      * {@code name} an empty collection will be returned.
@@ -225,7 +236,7 @@ public interface FileSystem<T> {
     List<T> findFileByName(final String name);
 
     /**
-     * Attempts to find all file with the specified {@code extension}.
+     * Attempts to find all files with the specified {@code extension}.
      * If there are no files on the file system with the specified
      * {@code extension} an empty collection will be returned.
      *
@@ -238,6 +249,22 @@ public interface FileSystem<T> {
      * by calling the {@link #terminate()} method
      */
     List<T> findFileByExtension(final String extension);
+
+    /**
+     * Attempts to find all files with the specified {@code parent}
+     * as the parent directory. If there are no files on the file system
+     * that mach the specified {@code parent} an empty collection will
+     * be returned.
+     *
+     * @param parent directory of the desired file
+     *
+     * @return a collection of all found files on the file system
+     *
+     * @exception NullPointerException if the specified {@code extension} is null
+     * @exception FileSystemClosedException if the file system was closed
+     * by calling the {@link #terminate()} method
+     */
+    List<T> findFileByParent(final T parent);
 
     /**
      * Attempts to find all directories with the specified {@code name}.
